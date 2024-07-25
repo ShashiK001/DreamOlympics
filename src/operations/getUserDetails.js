@@ -5,23 +5,19 @@ const validateToken = require('../backend/validateToken');
 async function getUserDetails(req, res) {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader) {
-        console.log('Authorization header missing');
-        return res.status(401).json({ message: 'Kindly provide Token First' });
-    }
-
-    try {
+        try {
         const reqToken = authHeader.split(' ')[1];
         console.log('Extracted Token:', reqToken);
 
         const userID = getTokenUserID(reqToken);  
         console.log('Extracted User ID:', userID);
 
-        if (validateToken(reqToken, userID)) {
-            console.log("Token is valid");
+        console.log("Token is valid");
 
             const userdetailsQuery = 'SELECT * FROM userdetails WHERE userID = ?';
             console.log('Executing query:', userdetailsQuery, [userID]);
+        if (validateToken(reqToken, userID)) {
+            
 
             try {
           

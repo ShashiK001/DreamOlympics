@@ -17,20 +17,14 @@ async function updateUserDetails(req, res) {
         return res.status(400).json({ message: 'No Fields To Update' });
     }
 
-    if (!authHeader) {
-        console.log('Authorization header missing');
-        return res.status(401).json({ message: 'Kindly provide Token First' });
-    }
-
-    try {
+    
         const reqToken = authHeader.split(' ')[1];
         console.log('Extracted Token:', reqToken);
 
         const userID = getTokenUserID(reqToken); 
         console.log('Extracted User ID:', userID);
 
-        if (validateToken(reqToken, userID)) {
-            console.log("Token is valid");
+        console.log("Updation Started");
 
         
             const fields = Object.keys(fieldsToUpdate).map(key => `${key} = ?`).join(', ');
@@ -52,14 +46,6 @@ async function updateUserDetails(req, res) {
                 console.error("Error executing update query:", err);
                 return res.status(500).json({ message: 'Internal Server Error' });
             }
-        } else {
-            console.log('Token is Invalid');
-            return res.status(401).json({ message: 'Token is Invalid' });
-        }
-    } catch (error) {
-        console.error('Token Error:', error.message);
-        return res.status(401).json({ error: error.message });
-    }
 }
 
 module.exports = { updateUserDetails };

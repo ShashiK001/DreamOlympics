@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const routes = require('./backend/routes');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 

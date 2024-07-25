@@ -3,14 +3,16 @@ const login = require('./login');
 const saveUserDetails = require('../operations/saveUserDetails');
 const getUserDetails=require('../operations/getUserDetails');
 const updateUserDetails=require('../operations/updateUserDetails');
+const validate=require('./validateUser');
+const validateToken=require('./validateToken');
 
 
 function routes(app) {
     app.post('/signup', signup.signup);
-    app.post('/login', login.login);
-    app.post('/saveUserDetails', saveUserDetails.saveUserDetails);
-    app.get('/getUserDetails', getUserDetails.getUserDetails);
-    app.post('/updateUserDetails', updateUserDetails.updateUserDetails);
+    app.post('/login', validate,login.login);
+    app.post('/saveUserDetails', validateToken,saveUserDetails.saveUserDetails);
+    app.get('/getUserDetails', validateToken,getUserDetails.getUserDetails);
+    app.post('/updateUserDetails', validateToken,updateUserDetails.updateUserDetails);
 }
 
 module.exports = routes;

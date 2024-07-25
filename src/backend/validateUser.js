@@ -1,8 +1,11 @@
 const db = require('./dbConnection');
 const jwt = require('jsonwebtoken');
 
-async function validateUser(userID, userPassword) {
+async function validateUser(req,res,next) {
+    const {userID,userPassword}=req.body;
+
     try {
+        console.log("Validating User");
         const loginQuery = `SELECT * FROM logindata WHERE userID = ? AND userPassword = ?`;
         const values = [userID, userPassword];
 
@@ -10,9 +13,10 @@ async function validateUser(userID, userPassword) {
         
         if (rows.length === 1) {
             const token = jwt.sign({ userID }, 'secretkey', { expiresIn: '30m' });
-            return { token };
+            req.token=token;
+            next();
         } else {
-            throw new Error('Invalid Credential');
+            res.status(401).json({ error: 'Invalid Credential' });
         }
     } catch (err) {
         console.error('error in Logging:', err.message);
