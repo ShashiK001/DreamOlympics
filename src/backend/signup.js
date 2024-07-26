@@ -1,15 +1,17 @@
 const db = require('./dbConnection');
+const generateUserID=require("./generateUserID");
 
 async function signup(req, res) {
-    const { userID, userPassword } = req.body;
+    const { userEmail, userPassword } = req.body;
 
-    if (!userID || !userPassword) {
-        return res.status(400).json({ error: 'userID and userPassword are required' });
+    if (!userEmail || !userPassword) {
+        return res.status(400).json({ error: 'userEmail and userPassword are required' });
     }
 
     try {
-        const sql = 'INSERT INTO logindata (userID, userPassword) VALUES (?, ?)';
-        const values = [userID, userPassword];
+        const userID = await generateUserID();
+        const sql = 'INSERT INTO logindata (userID, userEmail, userPassword) VALUES (?, ?, ?)';
+        const values = [userID, userEmail, userPassword];
 
         await db.query(sql, values);
         console.log('Data inserted successfully');

@@ -13,11 +13,14 @@ async function saveUserDetails(req, res) {
       if (authHeader) {
             const reqToken = authHeader.split(' ')[1];
             userID = getTokenUserID(reqToken);
+            emailSQL='SELECT userEmail FROM logindata WHERE userID = ?;';
+            userEmail=await db.query(emailSQL, userID);
+            console.log("userEmail:",userEmail);
 
             console.log("SQL Insertion Started");
 
-                const sql = 'INSERT INTO userdetails (userID, Name, Contact, Address, Amount) VALUES (?, ?, ?, ?, ?)';
-                const values = [userID, Name, Contact, Address, Amount];
+                const sql = 'INSERT INTO userdetails (userID, Name, userEmail, Contact, Address, Amount) VALUES (?, ?, ?, ?, ?)';
+                const values = [userID, Name, userEmail, Contact, Address, Amount];
 
                 await db.query(sql, values);
                 console.log('Data inserted successfully');
