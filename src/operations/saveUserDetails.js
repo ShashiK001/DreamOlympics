@@ -25,8 +25,6 @@ async function saveUserDetails(req, res) {
                 await db.query(sql, values);
                 console.log('Data inserted successfully');
                 return res.status(200).json({ message: 'User details saved successfully' });
-
         }
     } 
-
 module.exports = { saveUserDetails };
